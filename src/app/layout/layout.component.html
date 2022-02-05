@@ -1,0 +1,33 @@
+<!-- ----------------------------------------------------------------------------------------------------- -->
+<!-- Empty layout -->
+<!-- ----------------------------------------------------------------------------------------------------- -->
+
+
+<empty-layout *ngIf="layout === 'empty'"></empty-layout>
+
+
+
+<centered-layout *ngIf="layout === 'centered'"></centered-layout>
+<enterprise-layout *ngIf="layout === 'enterprise'"></enterprise-layout>
+<material-layout *ngIf="layout === 'material'"></material-layout>
+<modern-layout *ngIf="layout === 'modern'"></modern-layout>
+<classic-layout *ngIf="layout === 'classic'"></classic-layout>
+<classy-layout *ngIf="layout === 'classy'"></classy-layout>
+<compact-layout *ngIf="layout === 'compact'"></compact-layout>
+<dense-layout *ngIf="layout === 'dense'"></dense-layout>
+<futuristic-layout *ngIf="layout === 'futuristic'"></futuristic-layout>
+<thin-layout *ngIf="layout === 'thin'"></thin-layout>
+
+<!--
+<div *ngIf="layout === 'centered'">CENTERED</div>
+<div *ngIf="layout === 'enterprise'">ENTERPRISE</div>
+<div *ngIf="layout === 'material'">MATERIAL</div>
+<div *ngIf="layout === 'classic'">CLASSIC</div>
+<div *ngIf="layout === 'classy'">CLASSY</div>
+<div *ngIf="layout === 'compact'">COMPACT</div>
+<div *ngIf="layout === 'dense'">DENSE</div>
+<div *ngIf="layout === 'futuristic'">futuristic</div>
+<div *ngIf="layout === 'thin'">THIS</div>
+<settings></settings>
+-->
+

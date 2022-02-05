@@ -1,0 +1,402 @@
+<!-- Loading bar -->
+<fuse-loading-bar></fuse-loading-bar>
+<!-- Navigation -->
+<fuse-vertical-navigation
+    class="dark bg-gray-900 print:hidden"
+    [mode]="isScreenSmall ? 'over' : 'side'"
+    [name]="'mainNavigation'"
+    [navigation]="navigation.default"
+    [opened]="!isScreenSmall">
+    <!-- Navigation header hook -->
+    <ng-container fuseVerticalNavigationContentHeader>
+        <div class="flex items-center w-full p-4 pl-6">
+            <!-- Logo -->
+            <div class="flex items-center justify-center">
+                <img
+                    class="w-8"
+                    src="assets/images/logo/logo.svg">
+            </div>
+            <!-- Components -->
+            <div class="flex items-center ml-auto">
+                <notifications></notifications>
+                <user [showAvatar]="false"></user>
+            </div>
+        </div>
+        <!-- User -->
+        <div class="flex flex-col items-center w-full p-4">
+            <div class="relative w-24 h-24">
+                <img
+                    class="w-full h-full rounded-full"
+                    *ngIf="user.avatar"
+                    [src]="user.avatar"
+                    alt="User avatar">
+                <mat-icon
+                    class="icon-size-24"
+                    *ngIf="!user.avatar"
+                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+            </div>
+            <div class="flex flex-col items-center justify-center w-full mt-6">
+                <div class="w-full whitespace-nowrap overflow-ellipsis overflow-hidden text-center leading-normal font-medium">
+                    {{user.name}}
+                </div>
+                <div class="w-full mt-0.5 whitespace-nowrap overflow-ellipsis overflow-hidden text-center text-md leading-normal font-medium text-secondary">
+                    {{user.email}}
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <!-- Navigation footer hook -->
+    <ng-container fuseVerticalNavigationContentFooter>
+        <div class="flex flex-0 items-center justify-center h-16 pr-6 pl-2 mt-2 mb-4 opacity-12">
+            <img
+                class="max-w-36"
+                src="assets/images/logo/logo-text-on-dark.svg">
+        </div>
+    </ng-container>
+</fuse-vertical-navigation>
+
+<div class="flex flex-col flex-auto min-w-0">
+<!--- THIS IS MOVED INSIDE THE MAIN SECTION AFTER THE FIRST LINE -->
+<div class="relative flex flex-0 items-center w-full h-16 px-4 md:px-6 z-49 shadow dark:shadow-none dark:border-b bg-card dark:bg-transparent print:hidden">
+    <!-- Navigation toggle button -->
+    <button
+        mat-icon-button
+        (click)="toggleNavigation('mainNavigation')">
+        <mat-icon [svgIcon]="'heroicons_outline:menu'"></mat-icon>
+    </button>
+    <!-- Components -->
+    <div class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2">
+        <languages></languages>
+        <fuse-fullscreen class="hidden md:block"></fuse-fullscreen>
+        <search [appearance]="'bar'"></search>
+        <shortcuts></shortcuts>
+        <messages></messages>
+    </div>
+</div>
+<!--- THIS IS MOVED INSIDE THE MAIN SECTION AFTER THE FIRST LINE -->
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+            <div class="mt-2">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    Search for Assets <button *ngIf="searching=='N'" class="btn" (click)="showSearch()">Show</button><button *ngIf="searching=='Y'" class="btn" (click)="showSearch()">Hide</button>
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="row pl-3">
+<div class="col-xl-12">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="col-lg-6 py-2">
+                <h2 style="font-size: 24px;"><b>Search Critera</b></h2>
+            </div>
+        </div>
+    </div>
+    <form class="flex flex-col mt-3 p-3 pb-3 bg-card rounded-2xl shadow overflow-hidden">
+    <div *ngIf="searching=='Y'" class="row p-3">
+        <div class="col-xl-3">
+                <div class="flex flex-col gt-xs:flex-row">
+                    <mat-form-field
+                        [ngClass]="formFieldHelpers"
+                        class="flex-auto gt-xs:pr-3">
+                        <mat-label>Manufacturer</mat-label>
+                        <input matInput id="MFG" name="MFG" [(ngModel)]="data.formData['MFG']">
+                        <mat-icon
+                            class="icon-size-5"
+                            matSuffix
+                            [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                    </mat-form-field>
+                </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="flex flex-col gt-xs:flex-row">        
+                    <mat-form-field
+                        [ngClass]="formFieldHelpers"
+                        class="flex-auto gt-xs:pl-3">
+                        <mat-label>Model</mat-label>
+                        <input matInput id="MODEL" name="MODEL" [(ngModel)]="data.formData['MODEL']">
+                        <mat-icon
+                            class="icon-size-5"
+                            matSuffix
+                            [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                    </mat-form-field>
+            </div>
+        </div>
+        <div class="col-xl-3">   
+            <div class="flex flex-col gt-xs:flex-row">                  
+             <mat-form-field
+                        [ngClass]="formFieldHelpers"
+                        class="flex-auto gt-xs:pr-3">
+                        <mat-label>Serial #</mat-label>
+                        <input matInput id="SERIAL" name="SERIAL" [(ngModel)]="data.formData['SERIAL']">
+                        <mat-icon
+                            class="icon-size-5"
+                            matSuffix
+                            [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                    </mat-form-field>>
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="flex flex-col gt-xs:flex-row">  
+            <mat-form-field
+            [ngClass]="formFieldHelpers"
+            class="flex-auto gt-xs:pl-3">
+            <mat-label>Region (seperate with commas)</mat-label>
+            <input matInput id="REGION" name="REGION" [(ngModel)]="data.formData['REGION']">
+            <mat-icon
+                class="icon-size-5"
+                matSuffix
+                [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+        </mat-form-field>
+        </div>
+        </div>
+    </div>
+    <div *ngIf="searching=='Y'" class="row pl-3">
+        <div class="col-xl-3">
+            <div class="flex flex-col gt-xs:flex-row">  
+                    <mat-form-field
+                        [ngClass]="formFieldHelpers"
+                        class="flex-auto gt-xs:pl-3">
+                        <mat-label>Asset Class (partial string)</mat-label>
+                        <input matInput id="CLASS" name="CLASS" [(ngModel)]="data.formData['CLASS']">
+                        <mat-icon
+                            class="icon-size-5"
+                            matSuffix
+                            [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                    </mat-form-field>
+            </div>  
+        </div>
+        <div class="col-xl-3">
+            <div class="flex flex-col gt-xs:flex-row">  
+                    <mat-form-field
+                        [ngClass]="formFieldHelpers"
+                        class="flex-auto gt-xs:pl-3">
+                        <mat-label>Asset Name (partial string)</mat-label>
+                        <input matInput id="NAME" name="NAME" [(ngModel)]="data.formData['NAME']">
+                        <mat-icon
+                            class="icon-size-5"
+                            matSuffix
+                            [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                    </mat-form-field>
+                    </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="flex items-center justify-end border-t -mx-8 mt-8 px-8 py-5 bg-gray-50 dark:bg-gray-700">
+                <button
+                    class="px-6 ml-3"
+                    mat-flat-button
+                    [color]="'primary'" (click)="postForm()">
+                    Search
+                </button>
+            </div>
+        </div>
+        </div>
+</form>
+
+        </div>
+
+        </div> <!-- SEARCH ROW -->
+
+    <div class="row p-3">
+            <div class="col-xl-12">
+        <div class="table-responsive">
+            <div class="col-lg-6 py-2 mt-1">
+                <h2 style="font-size: 24px;"><br><b>Results</b></h2>
+            </div>
+            <div class="col-lg-6 py-2">
+                Search: <input style="max-width:320px;" class="form-control" type="text" id="term" name="term" [(ngModel)]="term"> 
+            </div>
+            <div class="card card-body" *ngFor="let m of data.list | filter: term | paginate: { currentPage: p , itemsPerPage: 50}"> <!-- LOOP -->
+                <div class="row p-3" [ngStyle]="{'background-color':m.BARCODE === 'Y' ? '#D4DED4' : '' }"> <!-- ASSET DISPLAY ROW (ALWAYS SHOWING) -->
+                    <div class="col-xl-2">
+                        <span style="font-size:18px;">{{ m.BUILDING_NBR }}</span><br>
+                        <span style="font-size:18px;">Asset: {{ m.ASSET_ID }}</span>
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <span style="font-size:18px;">{{ m.FACILITY_NAME }}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <span style="font-size:18px;">{{ m.CITY_NAME }}, {{ m.STATE_ABBR }} {{ m.ZIPCODE}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4">
+                        <div class="row">
+                            <div class="col-xl-3">
+                                <span style="font-size:18px;"><b>Asset Class</b></span>
+                            </div>
+                            <div class="col-xl-9">
+                                <span style="font-size:18px;">{{ m.ASSET_CLASS }}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-3">
+                                <span style="font-size:18px;"><b>Asset Name</b></span>
+                            </div>
+                            <div class="col-xl-9">
+                                <span style="font-size:18px;">{{ m.ASSET_NAME }}</span>
+                            </div>
+                        </div>
+                    </div>                      
+                    <div class="col-xl-2">
+                        <div class="row">
+                            <div class="col-xl-12 p-2 mb-3">
+                                <span style="font-size:18px;"><b>Due Date</b> - {{ m.TEST_DUE_DATE }}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                                    <div class="col-xl-12">
+                                        <button mat-raised-button="" 
+                                            (click)="showPanel(m.ASSET_ID)"
+                                            color="primary-200" 
+                                            matbadge="8" 
+                                            matbadgeposition="before" 
+                                            matbadgecolor="accent" 
+                                            class="mat-focus-indicator mat-badge mat-raised-button mat-button-base mat-primary-200 mat-badge-accent mat-badge-overlap mat-badge-above mat-badge-before mat-badge-medium">
+                                                <span class="mat-button-wrapper"> {{ m.ASSET_TYPE }} </span>
+                                                <span matripple="" class="mat-ripple mat-button-ripple"></span>
+                                                <span class="mat-button-focus-overlay"></span>
+                                                <span id="mat-badge-content-2" aria-hidden="true" class="mat-badge-content mat-badge-active">{{ m.DAYS }}</span>
+                                        </button>
+                                    </div>
+                        </div>
+                        <div class="row">
+                                    <div class="col-xl-6">
+
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <button class="btn btn-primary" [routerLink]="['/facility-dashboard',m.FACILITY_ID]"> View </button>
+                                    </div>
+                        </div>
+                    </div> <!-- XL-3 -->
+                </div> <!-- ROW ALWAYS DISPLAYED -->
+                <div class="row p-3" *ngIf="m.BARCODE=='Y'" [ngStyle]="{'background-color':m.BARCODE === 'Y' ? '#D4DED4' : '' }"> <!-- SHOWING AN ASSET -->
+                    <div class="col-xl-2">
+                        <b>Location: </b>{{ m.LOCATION_DSC}}
+                    </div>
+                    <div class="col-xl-10">
+                         <div class="row">
+                             <div class="col-xl-12">
+                                <b>Facility Summary</b>
+                             </div>
+                         </div>
+                         <div class="row">
+                             <div class="col-xl-2"><b>Assets: </b>{{ m.C_BSA_COUNT }}</div>
+                             <div class="col-xl-2"><b>Overdue: </b>{{ m.C_OVERDUE_TEST_COUNT }}</div>
+                             <div class="col-xl-2"><b>FPS Assets: </b>{{ m.C_FPS_BSA_COUNT }}</div>
+                             <div class="col-xl-2"><b>FPS Overdue: </b>{{ m.C_FPS_OVERDUE_TEST_COUNT }}</div>
+                             <div class="col-xl-2"><b>GSA Assets: </b>{{ m.C_GSA_BSA_COUNT }}</div>
+                             <div class="col-xl-2"><b>GSA Overdue: </b>{{ m.C_GSA_OVERDUE_TEST_COUNT }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-2"><b>Tenant Assets: </b>{{ m.C_TENANT_BSA_COUNT }}</div>
+                            <div class="col-xl-2"><b>Tenant Overdue: </b>{{ m.C_TENANT_OVERDUE_TEST_COUNT }}</div>
+                            <div class="col-xl-2"><b>Lessor Assets: </b>{{ m.C_LESSOR_BSA_COUNT }}</div>
+                            <div class="col-xl-2"><b>Lessor Overdue: </b>{{ m.C_LESSOR_OVERDUE_TEST_COUNT }}</div>
+                            <div class="col-xl-2"><b>Unknown Assets: </b>{{ m.C_UNK_BSA_COUNT }}</div>
+                            <div class="col-xl-2"><b>Unknown Overdue: </b>{{ m.C_UNK_OVERDUE_TEST_COUNT }}</div>
+                       </div>
+                       <div class="row">
+                            <div class="col-xl-2"></div>
+                            <div class="col-xl-2"></div>
+                            <div class="col-xl-2"><b>Leased Assets: </b>{{ m.C_LEASED_BSA_COUNT }}</div>
+                            <div class="col-xl-2"><b>Leasor Overdue: </b>{{ m.C_LEASED_OVERDUE_TEST_COUNT }}</div>
+                            <div class="col-xl-2"><b>Owned Assets: </b>{{ m.C_OWNED_BSA_COUNT }}</div>
+                            <div class="col-xl-2"><b>Owned Overdue: </b>{{ m.C_OWNED_OVERDUE_TEST_COUNT }}</div>
+                        </div>
+                    </div> <!-- XL-9-->
+                </div>  <!-- DISPLAY ROW -->
+                <div class="row p-3" *ngIf="m.BARCODE=='Y'&&m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'" [ngStyle]="{'background-color':m.BARCODE === 'Y' ? '#D4DED4' : '' }"> <!-- SHOWING AN ASSET -->
+                    <div class="col-xl-1">
+                        <b>IDS Data:</b>
+                    </div>
+                    <div class="col-xl-2">
+                        <b>Control Panels:</b> {{ m.COUNT_IDS_CONTROL_PANEL }}
+                    </div>
+                    <div class="col-xl-2">
+                        <b>Power Supplies:</b> {{ m.COUNT_IDS_POWER_SUPPLY }}
+                    </div>
+                    <div class="col-xl-2">
+                        <b>UPS:</b> {{ m.COUNT_IDS_UPS }}
+                    </div>
+                    <div class="col-xl-2">
+                        <b>User Interface:</b> {{ m.COUNT_IDS_USER_INTERFACE }}
+                    </div>
+                    <div class="col-xl-2">
+                        <b>Detectors:</b> {{ m.COUNT_IDS_DETECTOR }}
+                    </div>
+                 </div>
+                 <div class="row p-3" *ngIf="m.BARCODE=='Y'&&m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'" [ngStyle]="{'background-color':m.BARCODE === 'Y' ? '#D4DED4' : '' }"> <!-- SHOWING AN ASSET -->
+                    <div class="col-xl-1">
+                        <b> &nbsp; </b>
+                    </div>
+                    <div class="col-xl-2">
+                        <b>Warning Devices:</b> {{ m.COUNT_IDS_WARNING_DEVICE }}
+                    </div>
+                    <div class="col-xl-2">
+                        <b>Remote Consoles:</b> {{ m.COUNT_IDS_REMOTE_CONSOLES }}
+                    </div>
+                    <div class="col-xl-2">
+                        <b>Duress :</b> {{ m.COUNT_IDS_DURESS_BUTTON }}
+                    </div>
+                    <div class="col-xl-2">
+                        <b>Window Sensors:</b> {{ m.COUNT_IDS_WINDOW_SENSOR }}
+                    </div>
+                    <div class="col-xl-2">
+                        <b>Glass Break:</b> {{ m.COUNT_IDS_GLASS_BREAK_SENSOR }}
+                    </div>
+                 </div>
+                 <div class="row p-3" *ngIf="m.BARCODE=='Y'&&m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'" [ngStyle]="{'background-color':m.BARCODE === 'Y' ? '#D4DED4' : '' }"> <!-- SHOWING AN ASSET -->
+                    <div class="col-xl-1">
+                        <b> &nbsp; </b>
+                    </div>
+                    <div class="col-xl-2">
+                        <b>Door Sensors:</b> {{ m.COUNT_IDS_DOOR_SENSOR }}
+                    </div>
+                    <div class="col-xl-2">
+                        <b>Remote Consoles:</b> {{ m.COUNT_IDS_REMOTE_CONSOLES }}
+                    </div>
+                    <div class="col-xl-2">
+                        <b>Duress :</b> {{ m.COUNT_IDS_DURESS_BUTTON }}
+                    </div>
+                    <div class="col-xl-2">
+                        <b>Window Sensors:</b> {{ m.COUNT_IDS_WINDOW_SENSOR }}
+                    </div>
+                    <div class="col-xl-2">
+                        <b>Glass Break:</b> {{ m.COUNT_IDS_GLASS_BREAK_SENSOR }}
+                    </div>
+                 </div>
+                 <div class="row p-3" *ngIf="m.BARCODE=='Y'&&m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'" [ngStyle]="{'background-color':m.BARCODE === 'Y' ? '#D4DED4' : '' }"> <!-- SHOWING AN ASSET -->
+                    <div class="col-xl-1">
+                        <b>VSS: </b>
+                    </div>
+                    <div class="col-xl-2">
+                        <b>PTZ:</b> {{ m.COUNT_PTZ }}
+                    </div>
+                    <div class="col-xl-2">
+                        <b>Fixed:</b> {{ m.COUNT_FIXED }}
+                    </div>
+                    <div class="col-xl-2">
+                        <b>IP:</b> {{ m.COUNT_IP }}
+                    </div>
+                    <div class="col-xl-2">
+                        <b>Monitors:</b> {{ m.COUNT_MONITORS }}
+                    </div>
+                    <div class="col-xl-2">
+                        <b>Controllers:</b> {{ m.COUNT_CONTROLLERS }}
+                    </div>
+                 </div>
+            </div> <!-- END LOOP -->
+            <paging-controls (pageChange)="p = $event" [isItemsPerPage]="false"  
+            class="my-pagination"></paging-controls>
+        </div>
+    </div>
+
+</div>

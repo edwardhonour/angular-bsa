@@ -1,0 +1,1365 @@
+<!-- Loading bar -->
+<fuse-loading-bar></fuse-loading-bar>
+<!-- Navigation -->
+<fuse-vertical-navigation
+    class="dark bg-gray-900 print:hidden"
+    [mode]="isScreenSmall ? 'over' : 'side'"
+    [name]="'mainNavigation'"
+    [navigation]="navigation.default"
+    [opened]="!isScreenSmall">
+    <!-- Navigation header hook -->
+    <ng-container fuseVerticalNavigationContentHeader>
+        <div class="flex items-center w-full p-4 pl-6">
+            <!-- Logo -->
+            <div class="flex items-center justify-center">
+                <img
+                    class="w-8"
+                    src="assets/images/logo/logo.svg">
+            </div>
+            <!-- Components -->
+            <div class="flex items-center ml-auto">
+                <notifications></notifications>
+                <user [showAvatar]="false"></user>
+            </div>
+        </div>
+        <!-- User -->
+        <div class="flex flex-col items-center w-full p-4">
+            <div class="relative w-24 h-24">
+                <img
+                    class="w-full h-full rounded-full"
+                    *ngIf="user.avatar"
+                    [src]="user.avatar"
+                    alt="User avatar">
+                <mat-icon
+                    class="icon-size-24"
+                    *ngIf="!user.avatar"
+                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+            </div>
+            <div class="flex flex-col items-center justify-center w-full mt-6">
+                <div class="w-full whitespace-nowrap overflow-ellipsis overflow-hidden text-center leading-normal font-medium">
+                    {{user.name}}
+                </div>
+                <div class="w-full mt-0.5 whitespace-nowrap overflow-ellipsis overflow-hidden text-center text-md leading-normal font-medium text-secondary">
+                    {{user.email}}
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <!-- Navigation footer hook -->
+    <ng-container fuseVerticalNavigationContentFooter>
+        <div class="flex flex-0 items-center justify-center h-16 pr-6 pl-2 mt-2 mb-4 opacity-12">
+            <img
+                class="max-w-36"
+                src="assets/images/logo/logo-text-on-dark.svg">
+        </div>
+    </ng-container>
+</fuse-vertical-navigation>
+
+<div
+    class="absolute inset-0 flex flex-col min-w-0 overflow-y-auto"
+    cdkScrollable>
+<!--- THIS IS MOVED INSIDE THE MAIN SECTION AFTER THE FIRST LINE -->
+<div class="relative flex flex-0 items-center w-full h-16 px-4 md:px-6 z-49 shadow dark:shadow-none dark:border-b bg-card dark:bg-transparent print:hidden">
+    <!-- Navigation toggle button -->
+    <button
+        mat-icon-button
+        (click)="toggleNavigation('mainNavigation')">
+        <mat-icon [svgIcon]="'heroicons_outline:menu'"></mat-icon>
+    </button>
+    <!-- Components -->
+    <div class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2">
+        <languages></languages>
+        <fuse-fullscreen class="hidden md:block"></fuse-fullscreen>
+        <search [appearance]="'bar'"></search>
+        <shortcuts></shortcuts>
+        <messages></messages>
+    </div>
+</div>
+    <!-- Header -->
+    <div class="relative flex-0 py-8 px-4 sm:p-16 overflow-hidden bg-gray-800 dark"  style="padding-bottom: 20px !important; padding-top: 20px !important;">
+        <!-- Background - @formatter:off -->
+        <!-- Rings -->
+        <svg class="absolute inset-0 pointer-events-none"
+             viewBox="0 0 960 540" width="100%" height="100%" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+            <g class="text-gray-700 opacity-25" fill="none" stroke="currentColor" stroke-width="100">
+                <circle r="234" cx="196" cy="23"></circle>
+                <circle r="234" cx="790" cy="491"></circle>
+            </g>
+        </svg>
+        <!-- @formatter:on -->
+        <div class="z-10 relative flex flex-col items-center" style="margin-top: 40px;">
+            <h2 class="text-xl font-semibold">Facility Asset Dashboard</h2>
+            <div class="mt-1 text-4xl sm:text-7xl font-extrabold tracking-tight leading-tight text-center">
+                {{ data.FACILITY_NAME }}
+            </div>
+            <div class="max-w-2xl mt-6 sm:text-2xl text-center tracking-tight text-secondary">
+                {{ data.BUILDING_NBR }}<br>
+                {{ data.ADDRESS }}, {{ data.CITY_NAME }} {{ data.STATE_ABBR }} {{ data.ZIPCODE }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Main -->
+
+<div class="container-fluid p-1" style="margin-top: 10px;">
+    <div class="row">
+        <div class="col-xl-2">
+
+        </div>
+        <div class="col-xl-10">
+            <div class="card card-body" style="margin-top: 10px !important;">
+                <div class="row">
+                    <div class="col-xl-2">
+                        <button style="margin-bottom: 20px"  class="btn btn-primary" (click)="showFacility()">Show Facility Data</button>
+                    </div>
+                    <mat-tab-group
+                    class="sm:px-2"
+                    [animationDuration]="'0'">
+                    <mat-tab label="Overdue Asset Summary">
+                        <ng-template matTabContent>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 w-full min-w-0">
+                                <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                    <div class="flex items-start justify-between">
+                                        <div [routerLink]="['/company-list']" class="text-lg font-medium tracking-tight leading-6 truncate">FPS</div>
+                                        <div class="ml-2 -mt-2 -mr-3">
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col items-center mt-2">                                                
+                                        <div class="text-6xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">{{ data.C_FPS_OVERDUE_TEST_COUNT }}/{{ data.C_FPS_BSA_COUNT }}</div>
+                                        <div class="text-lg font-medium text-blue-600 dark:text-blue-500">Overdue</div>
+                                    </div>
+                                </div>
+                                <!-- Overdue -->
+                                <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                    <div class="flex items-start justify-between">
+                                        <div [routerLink]="['/quote-list']"  class="text-lg font-medium tracking-tight leading-6 truncate">GSA</div>
+                                        <div class="ml-2 -mt-2 -mr-3">
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col items-center mt-2">
+                                        <div class="text-6xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">{{ data.C_GSA_OVERDUE_TEST_COUNT }}/{{ data.C_GSA_BSA_COUNT }}</div>
+                                        <div class="text-lg font-medium text-red-600 dark:text-red-500">Overdue</div>
+                                        <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Issues -->
+                                <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                    <div class="flex items-start justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">Tenant</div>
+                                        <div class="ml-2 -mt-2 -mr-3">
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col items-center mt-2">
+                                        <div class="text-6xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">{{ data.C_TENANT_OVERDUE_TEST_COUNT }}/{{ data.C_TENANT_BSA_COUNT }}</div>
+                                        <div class="text-lg font-medium text-amber-600 dark:text-amber-500">Overdue</div>
+                                    </div>
+                                </div>
+                                <!-- Features -->
+                                <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                    <div class="flex items-start justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">Lessor</div>
+                                        <div class="ml-2 -mt-2 -mr-3">
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col items-center mt-2"> 
+                                        <div class="text-6xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">{{ data.C_LESSOR_OVERDUE_TEST_COUNT }}/{{ data.C_LESSOR_BSA_COUNT }}</div>
+                                        <div class="text-lg font-medium text-green-600 dark:text-green-500">Overdue</div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                    <div class="flex items-start justify-between">
+                                        <div class="text-lg font-medium tracking-tight leading-6 truncate">Unknown</div>
+                                        <div class="ml-2 -mt-2 -mr-3">
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col items-center mt-2"> 
+                                        <div class="text-6xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">{{ data.C_UNK_OVERDUE_TEST_COUNT }}/{{ data.C_UNK_BSA_COUNT }}</div>
+                                        <div class="text-lg font-medium text-green-600 dark:text-green-500">Overdue</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </mat-tab>            
+                </mat-tab-group>
+                </div>
+
+                <div class="card card-body" *ngIf="showingFacility=='Y'">
+                    <!-- SHOW FACILITY INFORMATION -->
+                    <div class="table-responsive">
+                        <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Building Number:</th>
+                                <td>{{ data.BUILDING_NBR }}</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>Address:</th>
+                                <td>{{ data.ADDRESS }}<br>{{ data.ADDRESS2 }}</td>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <td>{{ data.CITY_NAME }} {{ data.STATE_ABBR }} {{ data.ZIPCODE }}</td>
+                            </tr>
+                            <tr>
+                                <th>FSA Status:</th>
+                                <td>{{ data.C_FSA_STATUS }}</td>
+                            </tr>
+                            <tr>
+                                <th>FSCDO:</th>
+                                <td>{{ data.FSCDO_NAME }}</td>
+                            </tr>
+                            <tr>
+                                <th>FSCDO Title:</th>
+                                <td>{{ data.FSCDO_TITLE }}</td>
+                            </tr>
+                            <tr>
+                                <th>FSCDO Email:</th>
+                                <td>{{ data.FSCDO_EMAIL }}</td>
+                            </tr>
+                            <tr>
+                                <th>Last FSA:</th>
+                                <td>{{ data.LAST_FSA_DATE }}</td>
+                            </tr>
+                            <tr>
+                                <th>Next FSA:</th>
+                                <td>{{ data.NEXT_FSA_DATE }}</td>
+                            </tr>
+                            <tr>
+                                <th>Asset Count:</th>
+                                <td>{{ data.C_BSA_COUNT }}</td>
+                            </tr>
+                            <tr>
+                                <th>Overdue Count:</th>
+                                <td>{{ data.C_OVERDUE_TEST_COUNT }}</td>
+                            </tr>
+                            <tr>
+                                <th>Assigned Inspector:</th>
+                                <td>{{ data.ASSIGNED_INSPECTOR }}</td>
+                            </tr>
+                            <tr>
+                                <th>Special Instructions:</th>
+                                <td>{{ data.SPECIAL_INSTRUCTIONS }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">    <!-- CONTAINER ROW -->
+        <div class="col-xl-2"> &nbsp; </div>
+        <div class="col-xl-10">
+            <div class="card card-body"  style="margin-top: 30px;">
+                <h2 style="font-size: 24px;"><b>Building Security Assets</b></h2>
+                <div class="card card-body" *ngFor="let m of data.pacs">
+                    <div class="row p-3" [ngStyle]="{'background-color':m.BARCODE === 'Y' ? '#D4DED4' : '' }"> <!-- ASSET DISPLAY ROW (ALWAYS SHOWING) -->
+                        <div class="col-xl-2">
+                            <div class="row">
+                                <div class="col-xl-4">
+                                    <b>Asset:</b>         
+                                </div>
+                                <div class="col-xl-8">
+                                    {{ m.ASSET_ID }}         
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="row">
+                                <div class="col-xl-3">
+                                    <b>Class/Type</b>
+                                </div>
+                                <div class="col-xl-9">
+                                    {{ m.ASSET_CLASS}}<br>{{ m.ASSET_TYPE }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="row">
+                                <div class="col-xl-3">
+                                    <b>Name</b>
+                                </div>
+                                <div class="col-xl-9">
+                                    {{ m.ASSET_NAME}}
+                                </div>
+                            </div>
+                        </div>                      
+                        <div class="col-xl-3">
+                            <div class="row">
+                                <div class="col-xl-12 p-2 mb-3">
+                                    <b>Due Date</b> - {{ m.TEST_DUE_DATE }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-6">
+                                    <div class="row p-2 mb-2" *ngIf="m.component_count!='0'">
+                                        <div class="col-xl-12">
+                                            <button mat-raised-button="" 
+                                                (click)="showPanel(m.ASSET_ID)"
+                                                color="primary-200" 
+                                                matbadge="8" 
+                                                matbadgeposition="before" 
+                                                matbadgecolor="accent" 
+                                                class="mat-focus-indicator mat-badge mat-raised-button mat-button-base mat-primary-200 mat-badge-accent mat-badge-overlap mat-badge-above mat-badge-before mat-badge-medium">
+                                                    <span class="mat-button-wrapper"> Components </span>
+                                                    <span matripple="" class="mat-ripple mat-button-ripple"></span>
+                                                    <span class="mat-button-focus-overlay"></span>
+                                                    <span id="mat-badge-content-2" aria-hidden="true" class="mat-badge-content mat-badge-active">{{ m.component_count }}</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row p-2" *ngIf="m.history_count!='0'">
+                                        <div class="col-xl-12">
+                                            <button mat-raised-button="" 
+                                                (click)="showPanel(m.ASSET_ID)"
+                                                color="primary-200" 
+                                                matbadge="8" 
+                                                matbadgeposition="before" 
+                                                matbadgecolor="accent" 
+                                                class="mat-focus-indicator mat-badge mat-raised-button mat-button-base mat-primary-200 mat-badge-accent mat-badge-overlap mat-badge-above mat-badge-before mat-badge-medium">
+                                                    <span class="mat-button-wrapper"> History </span>
+                                                    <span matripple="" class="mat-ripple mat-button-ripple"></span>
+                                                    <span class="mat-button-focus-overlay"></span>
+                                                    <span id="mat-badge-content-2" aria-hidden="true" class="mat-badge-content mat-badge-active">{{ m.history_count }}</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="row p-2" *ngIf="m.doc_count!='0'"> 
+                                        <div class="col-xl-12">
+                                        <button mat-raised-button="" 
+                                            (click)="showPanel(m.ASSET_ID)"
+                                            color="primary-200" 
+                                            matbadge="8" 
+                                            matbadgeposition="before" 
+                                            matbadgecolor="accent" 
+                                            class="mat-focus-indicator mat-badge mat-raised-button mat-button-base mat-primary-200 mat-badge-accent mat-badge-overlap mat-badge-above mat-badge-before mat-badge-medium">
+                                                <span class="mat-button-wrapper"> Documents </span>
+                                                <span matripple="" class="mat-ripple mat-button-ripple"></span>
+                                                <span class="mat-button-focus-overlay"></span>
+                                                <span id="mat-badge-content-2" aria-hidden="true" class="mat-badge-content mat-badge-active">{{ m.doc_count }}</span>
+                                        </button>
+                                        </div>
+                                    </div>
+                                    <div class="row p-2">
+                                        <div class="col-xl-12">
+                                            <button (click)="showPanel(m.ASSET_ID)" mat-mini-fab="" color="bg-primary-200" class="mat-focus-indicator mat-mini-fab mat-button-base mat-primary">
+                                                <span class="mat-button-wrapper">
+                                                    <mat-icon role="img" class="mat-icon notranslate material-icons mat-icon-no-color" data-mat-icon-type="font">menu</mat-icon>
+                                                </span>
+                                                <span matripple="" class="mat-ripple mat-button-ripple mat-button-ripple-round"></span>
+                                                <span class="mat-button-focus-overlay"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row p-3" *ngIf="m.BARCODE=='Y'" [ngStyle]="{'background-color':m.BARCODE === 'Y' ? '#D4DED4' : '' }"> <!-- SHOWING AND EDITING AN ASSET -->
+                                    <div class="col-xl-4">
+                                        <div class="card card-body">
+                                            <div class="row p-1">
+                                                <div class="col-xl-4"><b>Asset ID:</b></div>
+                                                <div class="col-xl-8">{{ m.ASSET_ID }}</div>
+                                            </div>
+                                            <div class="row p-1">
+                                                <div class="col-xl-4"><b>Name:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8"><b>{{ m.ASSET_NAME }}</b></div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="ASSET_NAME" id="ASSET_NAME" [(ngModel)]="data.formData['ASSET_NAME']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1">
+                                                <div class="col-xl-4"><b>Class:</b></div>
+                                                <div class="col-xl-8">{{ m.ASSET_CLASS }}</div>
+                                            </div>
+                                            <div class="row p-1">
+                                                <div class="col-xl-4"><b>Type:</b></div>
+                                                <div class="col-xl-8">{{ m.ASSET_TYPE }}</div>
+                                            </div>
+                                            <div class="row p-1" *ngIf="m.AGENCY_CODE!=''||editing=='Y'">
+                                                <div class="col-xl-4"><b>Agency Code:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.AGENCY_CODE }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="AGENCY_CODE" id="AGENCY_CODE" [(ngModel)]="data.formData['AGENCY_CODE']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1" *ngIf="m.AGENCY_POC!=''||editing=='Y'">
+                                                <div class="col-xl-4"><b>Agency POC:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.AGENCY_POC }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="AGENCY_POC" id="AGENCY_POC" [(ngModel)]="data.formData['AGENCY_POC']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1">
+                                                <div class="col-xl-4"><b>Agency Responsibility:</b></div>
+                                                <div *ngIf="editing=='N'"  class="col-xl-8">{{ m.AGENCY_RESPONSIBILITY }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="AGENCY_RESPONSIBILITY" id="AGENCY_RESPONSIBILITY" [(ngModel)]="data.formData['AGENCY_RESPONSIBILITY']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1" *ngIf="m.LOCATION!=''||editing=='Y'">
+                                                <div class="col-xl-4"><b>Location:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.LOCATION_DSC }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="LOCATION_DSC" id="LOCATION_DSC" [(ngModel)]="data.formData['LOCATION_DSC']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1" *ngIf="m.MFG!=''||editing=='Y'">
+                                                <div class="col-xl-4"><b>Manufacturer:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.MFG }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="MFG" id="MFG" [(ngModel)]="data.formData['MFG']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1" *ngIf="m.MODEL!=''||editing=='Y'">
+                                                <div class="col-xl-4"><b>Model:</b></div>
+                                                <div *ngIf="editing=='N'"  class="col-xl-8">{{ m.MODEL }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="MODEL" id="MODEL" [(ngModel)]="data.formData['MODEL']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1" *ngIf="m.SERIAL!=''||editing=='Y'">
+                                                <div class="col-xl-4"><b>Serial:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.SERIAL }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="SERIAL" id="SERIAL" [(ngModel)]="data.formData['SERIAL']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1" *ngIf="m.INSTALL_DT!=''||editing=='Y'">
+                                                <div class="col-xl-4"><b>Install Date:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.INSTALL_DT }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="INSTALL_DT" id="INSTALL_DT" [(ngModel)]="data.formData['INSTALL_DT']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1">
+                                                <div class="col-xl-4"><b>Status:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.STATUS }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="STATUS" id="STATUS" [(ngModel)]="data.formData['STATUS']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1" *ngIf="m.OWNERSHIP!=''||editing=='Y'">
+                                                <div class="col-xl-4"><b>Ownership:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.OWNERSHIP }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="OWNERSHIP" id="OWNERSHIP" [(ngModel)]="data.formData['OWNERSHIP']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1" *ngIf="m.DESCRIPTION!=''||editing=='Y'">
+                                                <div class="col-xl-4"><b>Description:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.DESCRIPTION }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="DESCRIPTION" id="DESCRIPTION" [(ngModel)]="data.formData['DESCRIPTION']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1" *ngIf="m.POC_NAME!=''||editing=='Y'">
+                                                <div class="col-xl-4"><b>POC Name:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.POC_NAME }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="POC_NAME" id="POC_NAME" [(ngModel)]="data.formData['POC_NAME']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1" *ngIf="m.POC_NUMBER!=''||editing=='Y'">
+                                                <div class="col-xl-4"><b>POC Number:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.POC_NUMBER }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="POC_NUMBER" id="POC_NUMBER" [(ngModel)]="data.formData['POC_NUMBER']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1" *ngIf="m.POC_EMAIL!=''||editing=='Y'">
+                                                <div class="col-xl-4"><b>POC Email:</b></div>
+                                                <div *ngIf="editing=='N'"  class="col-xl-8">{{ m.POC_EMAIL }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="POC_EMAIL" id="POC_EMAIL" [(ngModel)]="data.formData['POC_EMAIL']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1" *ngIf="m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'">
+                                                <div class="col-xl-4"><b>Analog:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.ATTR_ANALOG }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="ATTR_ANALOG" id="ATTR_ANALOG" [(ngModel)]="data.formData['ATTR_ANALOG']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'">
+                                                <div class="col-xl-4"><b>Digital:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.ATTR_DIGITAL }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="ATTR_DIGITAL" id="ATTR_DIGITAL" [(ngModel)]="data.formData['ATTR_DIGITAL']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'">
+                                                <div class="col-xl-4"><b>IP:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.ATTR_IP }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="ATTR_IP" id="ATTR_IP" [(ngModel)]="data.formData['ATTR_IP']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'">
+                                                <div class="col-xl-4"><b>Fixed:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.ATTR_FIXED }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="ATTR_FIXED" id="ATTR_FIXED" [(ngModel)]="data.formData['ATTR_FIXED']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'">
+                                                <div class="col-xl-4"><b>PTZ:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.ATTR_PTZ }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="ATTR_PTZ" id="ATTR_PTZ" [(ngModel)]="data.formData['ATTR_PTZ']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'">
+                                                <div class="col-xl-4"><b>B/W:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.ATTR_BW }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="ATTR_BW" id="ATTR_BW" [(ngModel)]="data.formData['ATTR_BW']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'">
+                                                <div class="col-xl-4"><b>Infrared:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.ATTR_INFRARED }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="ATTR_INFRARED" id="ATTR_INFRARED" [(ngModel)]="data.formData['ATTR_INFRARED']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='PHYSICAL ACCESS CONTROL SYSTEM'||m.ASSET_CLASS=='PHYSICAL ACCESS CONTROL SYSTEM'||m.ATTR_HSPD12!=''">
+                                                <div class="col-xl-4"><b>HSPD12:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.ATTR_HSPD12 }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="ATTR_HSPD12" id="ATTR_HSPD12" [(ngModel)]="data.formData['ATTR_HSPD12']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1" *ngIf="m.ASSET_CLASS=='PHYSICAL ACCESS CONTROL SYSTEM'||m.ASSET_CLASS=='PHYSICAL ACCESS CONTROL SYSTEM'||m.ATTR_APL_LIST!=''">
+                                                <div class="col-xl-4"><b>APL List:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.ATTR_APL_LIST }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="ATTR_APL_LIST" id="ATTR_APL_LIST" [(ngModel)]="data.formData['ATTR_APL_LIST']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1" *ngIf="m.ASSET_CLASS=='BARRIER SYSTEM'||m.ASSET_CLASS=='BARRIER SYSTEM EQUIPMENT'||m.ATTR_CRASH_RATED!=''">
+                                                <div class="col-xl-4"><b>Crash Rated:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.ATTR_CRASH_RATED }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="ATTR_CRASH_RATED" id="ATTR_CRASH_RATED" [(ngModel)]="data.formData['ATTR_CRASH_RATED']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.LESSOR_NAME!=''||editing=='Y'">
+                                                <div class="col-xl-4"><b>Lessor Name:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.LESSOR_NAME }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="LESSOR_NAME" id="LESSOR_NAME" [(ngModel)]="data.formData['LESSOR_NAME']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1" *ngIf="m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'">
+                                                <div class="col-xl-4"><b>DVR Count:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.COUNT_DVR }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="COUNT_DVR" id="COUNT_DVR" [(ngModel)]="data.formData['COUNT_DVR']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'">
+                                                <div class="col-xl-4"><b>Fixed Count:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.COUNT_FIXED }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="COUNT_FIXED" id="COUNT_FIXED" [(ngModel)]="data.formData['COUNT_FIXED']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'">
+                                                <div class="col-xl-4"><b>PTZ Count:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.COUNT_PTZ }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="COUNT_PTZ" id="COUNT_PTZ" [(ngModel)]="data.formData['COUNT_PTZ']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'">
+                                                <div class="col-xl-4"><b>IP Count:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.COUNT_IP }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="COUNT_IP" id="COUNT_IP" [(ngModel)]="data.formData['COUNT_IP']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'">
+                                                <div class="col-xl-4"><b>Monitor Count:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.COUNT_MONITORS }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="COUNT_MONITORS" id="COUNT_MONITORS" [(ngModel)]="data.formData['COUNT_MONITORS']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'">
+                                                <div class="col-xl-4"><b>Controller Count:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.COUNT_CONTROLLERS }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="COUNT_CONTROLLERS" id="COUNT_CONTROLLERS" [(ngModel)]="data.formData['COUNT_CONTROLLERS']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'">
+                                                <div class="col-xl-4"><b>Has UPS:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.HAS_UPS }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="HAS_UPS" id="HAS_UPS" [(ngModel)]="data.formData['HAS_UPS']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'">
+                                                <div class="col-xl-4"><b>Recording Type:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.RECORDING_TYPE }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="RECORDING_TYPE" id="RECORDING_TYPE" [(ngModel)]="data.formData['RECORDING_TYPE']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'">
+                                                <div class="col-xl-4"><b>Controller Type:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.CONTROLLER_TYPE }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="CONTROLLER_TYPE" id="CONTROLLER_TYPE" [(ngModel)]="data.formData['CONTROLLER_TYPE']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1" *ngIf="m.ASSET_CLASS=='BARRIER SYSTEM'||m.PEN_RATING!=''">
+                                                <div class="col-xl-4"><b>Pen Rating:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.PEN_RATING }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="PEN_RATING" id="PEN_RATING" [(ngModel)]="data.formData['PEN_RATING']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1" *ngIf="m.ASSET_CLASS=='BARRIER SYSTEM'||m.ASSET_CLASS=='BARRIER SYSTEM EQUIPMENT'||m.ITEM_COUNT!=''">
+                                                <div class="col-xl-4"><b>Item Count:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.ITEM_COUNT }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="ITEM_COUNT" id="ITEM_COUNT" [(ngModel)]="data.formData['ITEM_COUNT']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1">
+                                                <div class="col-xl-4"><b>Verified:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.VERIFIED }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="VERIFIED" id="VERIFIED" [(ngModel)]="data.formData['VERIFIED']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1">
+                                                <div class="col-xl-4"><b>Verified By:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.VERIFIED_BY }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="VERIFIED_BY" id="VERIFIED_BY" [(ngModel)]="data.formData['VERIFIED_BY']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1">
+                                                <div class="col-xl-4"><b>Verified Date:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.VERIFIED_DT }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="VERIFIED_DT" id="VERIFIED_DT" [(ngModel)]="data.formData['VERIFIED_DT']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1" *ngIf="m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM EQUIPMENT'">
+                                                <div class="col-xl-4"><b>Control Panel Count:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.COUNT_IDS_CONTROL_PANEL }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="COUNT_IDS_CONTROL_PANEL" id="COUNT_IDS_CONTROL_PANEL" [(ngModel)]="data.formData['COUNT_IDS_CONTROL_PANEL']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1" *ngIf="m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM EQUIPMENT'">
+                                                <div class="col-xl-4"><b>Power Supply Count:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.COUNT_IDS_POWER_SUPPLY }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="COUNT_IDS_POWER_SUPPLY" id="COUNT_IDS_POWER_SUPPLY" [(ngModel)]="data.formData['COUNT_IDS_POWER_SUPPLY']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM EQUIPMENT'">
+                                                <div class="col-xl-4"><b>UPS Count:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.COUNT_IDS_UPS }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="COUNT_IDS_UPS" id="COUNT_IDS_UPS" [(ngModel)]="data.formData['COUNT_IDS_UPS']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM EQUIPMENT'">
+                                                <div class="col-xl-4"><b>User Interface Count:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.COUNT_USER_INTERFACE }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="COUNT_USER_INTERFACE" id="COUNT_USER_INTERFACE" [(ngModel)]="data.formData['COUNT_USER_INTERFACE']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM EQUIPMENT'">
+                                                <div class="col-xl-4"><b>Detector Count:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.COUNT_IDS_DETECTOR }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="COUNT_IDS_DETECTOR" id="COUNT_IDS_DETECTOR" [(ngModel)]="data.formData['COUNT_IDS_DETECTOR']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM EQUIPMENT'">
+                                                <div class="col-xl-4"><b>Warning Device Count:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.COUNT_IDS_WARNING_DEVICE }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="COUNT_IDS_WARNING_DEVICE" id="COUNT_IDS_WARNING_DEVICE" [(ngModel)]="data.formData['COUNT_IDS_WARNING_DEVICE']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM EQUIPMENT'">
+                                                <div class="col-xl-4"><b>Remote Console Count:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.COUNT_IDS_REMOTE_CONSOLE }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="COUNT_IDS_REMOTE_CONSOLE" id="COUNT_IDS_REMOTE_CONSOLE" [(ngModel)]="data.formData['COUNT_IDS_REMOTE_CONSOLE']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM EQUIPMENT'">
+                                                <div class="col-xl-4"><b>Duress Button Count:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.COUNT_IDS_DURESS_BUTTON }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="COUNT_IDS_DURESS_BUTTON" id="COUNT_IDS_DURESS_BUTTON" [(ngModel)]="data.formData['COUNT_IDS_DURESS_BUTTON']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM EQUIPMENT'">
+                                                <div class="col-xl-4"><b>Window Sensor Count:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.COUNT_IDS_WINDOW_SENSOR }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="COUNT_IDS_WINDOW_SENSOR" id="COUNT_IDS_WINDOW_SENSOR" [(ngModel)]="data.formData['COUNT_IDS_WINDOW_SENSOR']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1"  *ngIf="m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||m.ASSET_CLASS=='INTRUSION DETECTION SYSTEM EQUIPMENT'">
+                                                <div class="col-xl-4"><b>Glass Break Sensor Count:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.COUNT_IDS_GLASS_BREAK_SENSOR }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="COUNT_IDS_GLASS_BREAK_SENSOR" id="COUNT_IDS_GLASS_BREAK_SENSOR" [(ngModel)]="data.formData['COUNT_IDS_GLASS_BREAK_SENSOR']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1">
+                                                <div class="col-xl-4"><b>Last Test Date:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.LAST_TEST_DATE }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="LAST_TEST_DATE" id="LAST_TEST_DATE" [(ngModel)]="data.formData['LAST_TEST_DATE']">
+                                                </div>
+                                            </div>
+                                            <div class="row p-1">
+                                                <div class="col-xl-4"><b>Test Due Date:</b></div>
+                                                <div *ngIf="editing=='N'" class="col-xl-8">{{ m.TEST_DUE_DATE }}</div>
+                                                <div *ngIf="editing=='Y'" class="col-xl-8">
+                                                    <input class="form-control" type="text" name="TEST_DUE_DATE" id="TEST_DUE_DATE" [(ngModel)]="data.formData['TEST_DUE_DATE']">
+                                                </div>
+                                            </div>
+                                            <div *ngIf="editing=='N'" class="row p-1">
+                                                <div (click)="showEdit(m)" class="col-xl-3"><b><button class="btn btn-primary">Edit</button></b></div>
+                                                <div class="col-xl-9"></div>
+                                            </div>
+                                            <div *ngIf="editing=='Y'" class="row p-1">
+                                                <div (click)="postForm()" class="col-xl-3"><b><button class="btn btn-primary">Save</button></b></div>
+                                                <div (click)="showEdit(m)" class="col-xl-3"><b><button class="btn">Cancel</button></b></div>
+                                                <div class="col-xl-6"></div>
+                                            </div>
+                                        </div>
+                                            <div class="card card-body mt-3" *ngIf="testing!='Y'&&addcomponents!='Y'&&editing!='Y'">
+                                                <div class="row p-2">
+                                                    <div class="col-xl-9">
+                                                        <h2 style="font-size: 20px;"><b>Documents</b></h2>
+                                                    </div>
+                                                    <div class="col-xl-2">
+                                                        <button *ngIf="uploading=='N'" (click)="showUpload(m.ASSET_ID)" class="btn btn-primary">Upload</button>
+                                                    </div>
+                                                    <div class="col-xl-1">
+                                                        &nbsp;
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="uploading=='Y'"  class="card card-body">
+                                                    <h2 style="font-size: 24px;"><b>Select File to Upload</b></h2>
+                                                    <div class="row">
+                                                        <div class="col-xl-4"> &nbsp; </div>            
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xl-4">File Type</div>
+                                                        <div class="col-xl-8">
+                                                        <select class="form-control" [(ngModel)]="doctype" name="doctype" id="doctype">
+                                                            <option value="0">--Select File Type--</option>
+                                                            <option value="1">PDF</option>
+                                                            <option value="2">Word Document</option>
+                                                            <option value="8">Excel</option>
+                                                            <option value="4">Text File</option>
+                                                            <option value="9">Other</option>                  
+                                                        </select> 
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xl-4">Document Type</div>
+                                                        <div class="col-xl-8">
+                                                        <select class="form-control" [(ngModel)]="stddoc" name="stddoc" id="stddoc">
+                                                            <option value="0">--Select Document --</option>
+                                                            <option value="21">Functionality Test</option>
+                                                            <option value="22">Performance Test</option>
+                                                            <option value="9">Other</option>                
+                                                        </select> 
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xl-4">Title/Name</div>
+                                                        <div class="col-xl-8">
+                                                        <input type="text" class="form-control" [(ngModel)]="title" name="title" id="title">
+                                                    </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xl-4"> &nbsp; </div>            
+                                                    </div>
+                                                    <div class="mc">
+                                                        <input [formControl]="file" (change)="fileChange(index,$event)" type="file" placeholder="File">
+                                                        <br>
+                                                        <button style="margin-top:20px" (click)="showUpload()" mat-raised-button color="default">
+                                                            Cancel
+                                                        </button>
+                                                        <button style="margin-top:20px; margin-left:20px;" (click)="uploadFile()" mat-raised-button color="primary">
+                                                            Upload
+                                                        </button>
+                                                    </div>
+                                                    </div>
+                                                <div class="card card-body p-2 mb-2" *ngFor="let n of m.docs">
+                                                    <div class="row p-2">
+                                                        <div class="col-xl-4">
+                                                            <b>Document ID: </b>
+                                                        </div>
+                                                        <div class="col-xl-8">
+                                                            <b>{{ n.FSA_DOC_ID }}</b>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row p-2">
+                                                        <div class="col-xl-4">
+                                                            <b>Title: </b>
+                                                        </div>
+                                                        <div class="col-xl-8">
+                                                            {{ n.DOC_TITLE }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="row p-2">
+                                                        <div class="col-xl-4">
+                                                            <b>Upload Date: </b>
+                                                        </div>
+                                                        <div class="col-xl-8">
+                                                            {{ n.UPDLOAD_DT_TM }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="row p-2">
+                                                        <div class="col-xl-4">
+                                                            <b>Upload Date: </b>
+                                                        </div>
+                                                        <div class="col-xl-2">
+                                                            <button class="btn btn-primary">View</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-8">
+                                        <!-- COMPNOENT FORM -->
+                                        <div class="row" *ngIf="addcomponents=='Y'&&testing=='N'" style="background-color: #ffffff;">
+                                            <div class="row p-2">
+                                                <div class="col-xl-12">
+                                                    <h2 style="font-size: 20px;"><b>Add System Components</b></h2>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <form class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden" autocomplete="off">
+                                                    <div class="flex flex-col gt-xs:flex-row">
+                                                        <div class="flex">
+                                                            <mat-form-field
+                                                            [ngClass]="formFieldHelpers"
+                                                            class="flex-auto gt-xs:pr-3">
+                                                            <mat-label>QTY</mat-label>
+                                                            <mat-select  id="QTY" name="QTY" [(ngModel)]="data.formData3['QTY']">
+                                                                <mat-option value="1">1</mat-option>
+                                                                <mat-option value="2">2</mat-option>
+                                                                <mat-option value="3">3</mat-option>
+                                                                <mat-option value="4">4</mat-option>
+                                                                <mat-option value="5">5</mat-option>
+                                                                <mat-option value="6">6</mat-option>
+                                                                <mat-option value="7">7</mat-option>
+                                                                <mat-option value="8">8</mat-option>
+                                                                <mat-option value="9">9</mat-option>
+                                                                <mat-option value="10">10</mat-option>
+                                                                <mat-option value="11">11</mat-option>
+                                                                <mat-option value="12">12</mat-option>
+                                                                <mat-option value="13">13</mat-option>
+                                                                <mat-option value="14">14</mat-option>
+                                                                <mat-option value="15">15</mat-option>
+                                                                <mat-option value="16">16</mat-option>
+                                                                <mat-option value="17">17</mat-option>
+                                                                <mat-option value="18">18</mat-option>
+                                                                <mat-option value="19">19</mat-option>
+                                                                <mat-option value="20">20</mat-option>
+                                                                <mat-option value="21">21</mat-option>
+                                                                <mat-option value="22">22</mat-option>
+                                                                <mat-option value="23">23</mat-option>
+                                                                <mat-option value="24">24</mat-option>
+                                                                <mat-option value="25">25</mat-option>
+                                                                <mat-option value="26">26</mat-option>
+                                                                <mat-option value="27">27</mat-option>
+                                                                <mat-option value="28">28</mat-option>
+                                                                <mat-option value="29">29</mat-option>
+                                                                <mat-option value="30">30</mat-option>
+                                                                <mat-option value="31">31</mat-option>
+                                                                <mat-option value="32">32</mat-option>
+                                                                <mat-option value="33">33</mat-option>
+                                                                <mat-option value="34">34</mat-option>
+                                                                <mat-option value="35">35</mat-option>
+                                                                <mat-option value="36">36</mat-option>
+                                                                <mat-option value="37">37</mat-option>
+                                                                <mat-option value="38">38</mat-option>
+                                                                <mat-option value="39">39</mat-option>
+                                                                <mat-option value="40">40</mat-option>
+                                                                <mat-option value="41">41</mat-option>
+                                                                <mat-option value="42">42</mat-option>
+                                                                <mat-option value="43">43</mat-option>
+                                                                <mat-option value="44">44</mat-option>
+                                                                <mat-option value="45">45</mat-option>
+                                                                <mat-option value="46">46</mat-option>
+                                                                <mat-option value="47">47</mat-option>
+                                                                <mat-option value="48">48</mat-option>
+                                                                <mat-option value="49">49</mat-option>
+                                                                <mat-option value="50">50</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                        </div>
+                                                        <mat-form-field
+                                                        [ngClass]="formFieldHelpers"
+                                                        class="flex-auto gt-xs:pr-3">
+                                                        <mat-label>Type</mat-label>
+                                                        <mat-select  id="ASSET_TYPE" name="ASSET_TYPE" [(ngModel)]="data.formData3['ASSET_TYPE']">
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="ACCESS CONTROL PANEL">ACCESS CONTROL PANEL</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="ACCESS CONTROL PANEL">ACCESS CONTROL PANEL</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="ACCESS PANEL">ACCESS PANEL</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="ACOUSTICAL ALARM">ACOUSTICAL ALARM</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'"  value="ACTIVE INFRARED SENSOR">ACTIVE INFRARED SENSOR</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'"  value="ALARM PANEL">ALARM PANEL</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="ANTENNA">ANTENNA</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="AUDIBLE (SPEAKERS/SIREN)">AUDIBLE (SPEAKERS/SIREN)</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="AUDIBLE ALARM">AUDIBLE ALARM</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="BACKUP POWER SUPPLY/UPS">BACKUP POWER SUPPLY/UPS</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="BARRIER">BARRIER</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL SYSTEM'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL EQUIPMENT'" value="BIOMETRIC">BIOMETRIC</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='BARRIER'||data.formData3.ASSET_CLASS=='BARRIER SYSTEM'||data.formData3.ASSET_CLASS=='BARRIER COMPONENT'" value="BOLLARD">BOLLARD</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'"  value="BURIED LINE/PORTED CABLE SENSOR">BURIED LINE/PORTED CABLE SENSOR</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="CAMERA - ANALOG">CAMERA - ANALOG</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="CAMERA - DIGITAL">CAMERA - DIGITAL</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="CAMERA - FIXED">CAMERA - FIXED</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="CAMERA - PTZ">CAMERA - PTZ</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="CAMERA DIGTIAL">CAMERA DIGTIAL</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="CAMERA OUTPUT">CAMERA OUTPUT</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL SYSTEM'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL EQUIPMENT'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL COMPONENT'" value="CARD READER PIV">CARD READER PIV</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL SYSTEM'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL EQUIPMENT'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL COMPONENT'" value="CARD READER PROX">CARD READER PROX</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="CLIENT/SERVER WORKSTATION">CLIENT/SERVER WORKSTATION</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="CONTACT ALARM PROX">CONTACT ALARM PROX</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='BARRIER'||data.formData3.ASSET_CLASS=='BARRIER SYSTEM'||data.formData3.ASSET_CLASS=='BARRIER COMPONENT'" value="CRASH RATED">CRASH RATED</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="DECODER">DECODER</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="DISTRIBUTED POWER SUPPLY">DISTRIBUTED POWER SUPPLY</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="DOOR CONTACT">DOOR CONTACT</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='DRONE SYSTEM'" value="DRONE">DRONE</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='BARRIER'||data.formData3.ASSET_CLASS=='BARRIER SYSTEM'||data.formData3.ASSET_CLASS=='BARRIER COMPONENT'" value="DROP ARM">DROP ARM</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="DURESS">DURESS</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="DURESS ALARM">DURESS ALARM</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="DURESS BUTTON">DURESS BUTTON</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'"  value="ENCODER">ENCODER</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="EXPANSION UNIT">EXPANSION UNIT</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='METAL DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='METAL DETECTION EQUIPMENT'" value="EXPLOSIVE TRACE DETECTION (ETD)">EXPLOSIVE TRACE DETECTION (ETD)</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="EXTERIOR IDS">EXTERIOR IDS</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="FENCE LINE SENSOR">FENCE LINE SENSOR</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='ALARM SYSTEM'||data.formData3.ASSET_CLASS=='ALARM SYSTEM COMPONENT'" value="FIRE ALARM">FIRE ALARM</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='BARRIER'||data.formData3.ASSET_CLASS=='BARRIER SYSTEM'||data.formData3.ASSET_CLASS=='BARRIER COMPONENT'" value="FIXED BOLLARD">FIXED BOLLARD</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='BARRIER'||data.formData3.ASSET_CLASS=='BARRIER SYSTEM'||data.formData3.ASSET_CLASS=='BARRIER COMPONENT'" value="FOOT RAIL">FOOT RAIL</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="GLASS BREAK">GLASS BREAK</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="GLASS BREAK SENSOR">GLASS BREAK SENSOR</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='BARRIER'||data.formData3.ASSET_CLASS=='BARRIER SYSTEM'||data.formData3.ASSET_CLASS=='BARRIER COMPONENT'" value="GUARD RAIL">GUARD RAIL</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='METAL DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='METAL DETECTION EQUIPMENT'" value="HANDHELD DETECTOR">HANDHELD DETECTOR</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='BARRIER'||data.formData3.ASSET_CLASS=='BARRIER SYSTEM'||data.formData3.ASSET_CLASS=='BARRIER COMPONENT'" value="HYDRAULIC BOLLARD">HYDRAULIC BOLLARD</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='BARRIER'||data.formData3.ASSET_CLASS=='BARRIER SYSTEM'||data.formData3.ASSET_CLASS=='BARRIER COMPONENT'" value="HYDRAULIC WEDGE">HYDRAULIC WEDGE</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="INTERIOR IDS">INTERIOR IDS</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="INTRUSION DETECTION EQUIPMENT">INTRUSION DETECTION EQUIPMENT</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='BARRIER'||data.formData3.ASSET_CLASS=='BARRIER SYSTEM'||data.formData3.ASSET_CLASS=='BARRIER COMPONENT'" value="JERSEY BARRIER/WALL">JERSEY BARRIER/WALL</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="KEYPAD">KEYPAD</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="MATRIX UNIT">MATRIX UNIT</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="MICROWAVE DETECTOR">MICROWAVE DETECTOR</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="MICROWAVE TRANSMITTER/RECEIVER">MICROWAVE TRANSMITTER/RECEIVER</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL SYSTEM'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL EQUIPMENT'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL COMPONENT'" value="MONITOR">MONITOR</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="MOTION ALARM PROX">MOTION ALARM PROX</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="MOTION SENSOR">MOTION SENSOR</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="NETWORK SWITCH - Non-PoE">NETWORK SWITCH - Non-PoE</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="NETWORK SWITCH - PoE">NETWORK SWITCH - PoE</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="OTHER IDS">OTHER IDS</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='METAL DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='METAL DETECTION EQUIPMENT'" value="OTHER MDE">OTHER MDE</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL SYSTEM'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL EQUIPMENT'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL COMPONENT'" value="OTHER PAC">OTHER PAC</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL SYSTEM'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL EQUIPMENT'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL COMPONENT'" value="OTHER PAC E-KEY">OTHER PAC E-KEY</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL SYSTEM'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL EQUIPMENT'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL COMPONENT'" value="OTHER PACS">OTHER PACS</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL SYSTEM'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL EQUIPMENT'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL COMPONENT'" value="OTHER PACS EQUIPMENT">OTHER PACS EQUIPMENT</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL SYSTEM'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL EQUIPMENT'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL COMPONENT'" value="OTHER PHONE SYSTEM">OTHER PHONE SYSTEM</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='XRAY SYSTEM'||data.formData3.ASSET_CLASS=='XRAY EQUIPMENT'" value="PACKAGE XRAY INSPECTION">PACKAGE XRAY INSPECTION</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL SYSTEM'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL EQUIPMENT'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL COMPONENT'" value="PACS INTERROGATOR">PACS INTERROGATOR</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL SYSTEM'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL EQUIPMENT'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL COMPONENT'" value="PACS SERVER">PACS SERVER</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="PANAC ALARM">PANAC ALARM</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="PASSIVE INFRARED SENSOR">PASSIVE INFRARED SENSOR</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="PATCH PANEL ETHERNET">PATCH PANEL ETHERNET</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="PATCH PANEL FIBER">PATCH PANEL FIBER</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='TELECOMUNICATIONS SYSTEM'||data.formData3.ASSET_CLASS=='TELECOMUNICATIONS EQUIPMENT'" value="PHONE">PHONE</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="PHOTOELECTRIC BEAM">PHOTOELECTRIC BEAM</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL SYSTEM'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL EQUIPMENT'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL COMPONENT'" value="PHYSICAL ACCESS CONTROL COMPONENT">PHYSICAL ACCESS CONTROL COMPONENT</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL SYSTEM'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL EQUIPMENT'||data.formData3.ASSET_CLASS=='PHYSICAL ACCESS CONTROL COMPONENT'" value="PHYSICAL ACCESS CONTROL EQUIPMENT">PHYSICAL ACCESS CONTROL EQUIPMENT</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'||data.formData3.ASSET_CLASS=='ALARM SYSTEM'" value="POWER SUPPLY">POWER SUPPLY</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="PROXIMITY SENSORS">PROXIMITY SENSORS</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="PTZ CONTROLLER">PTZ CONTROLLER</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="RECEIVER">RECEIVER</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="REQUEST TO EXIT (REX)">REQUEST TO EXIT (REX)</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="ROUTER">ROUTER</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="SERVER">SERVER</mat-option>
+                                                            <mat-option value="SERVER">SERVER</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="SHOCK SENSOR">SHOCK SENSOR</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='ALARM SYSTEM'||data.formData3.ASSET_CLASS=='ALARM SYSTEM COMPONENT'" value="SMOKE DETECTOR">SMOKE DETECTOR</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="SOUNDER">SOUNDER</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='BARRIER'||data.formData3.ASSET_CLASS=='BARRIER SYSTEM'||data.formData3.ASSET_CLASS=='BARRIER COMPONENT'" value="SPIKE SYSTEM/TIRE SHREDDERS">SPIKE SYSTEM/TIRE SHREDDERS</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="TAMPER ALARM">TAMPER ALARM</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="TRANSMITTER">TRANSMITTER</mat-option>
+                                                            <mat-option value="UNKNOWN">UNKNOWN</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='XRAY SYSTEM'||data.formData3.ASSET_CLASS=='XRAY EQUIPMENT'"  value="VEHICLE XRAY INSPECTION">VEHICLE XRAY INSPECTION</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="VIDEO MONITOR">VIDEO MONITOR</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="VIDEO RECORDER">VIDEO RECORDER</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="VIDEO RECORDER DIGITAL">VIDEO RECORDER DIGITAL</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="VIDEO RECORDER HYBRID">VIDEO RECORDER HYBRID</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="VIDEO RECORDER NETWORK">VIDEO RECORDER NETWORK</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="VIDEO SURVEILLANCE SYSTEM">VIDEO SURVEILLANCE SYSTEM</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM'||data.formData3.ASSET_CLASS=='VIDEO SURVEILLANCE SYSTEM EQUIPMENT'" value="VIDEO SURVEILLANCE EQUIPMENT">VIDEO SURVEILLANCE EQUIPMENT</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="VISUAL (LIGHT/STROBE)">VISUAL (LIGHT/STROBE)</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='METAL DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='METAL DETECTION EQUIPMENT'" value="WALK THROUGH DETECTOR">WALK THROUGH DETECTOR</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="WIRED DURESS BUTTON">WIRED DURESS BUTTON</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='INTRUSION DETECTION SYSTEM'||data.formData3.ASSET_CLASS=='INTRUSION DETECTION EQUIPMENT'" value="WIRELESS DURESS BUTTON">WIRELESS DURESS BUTTON</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='XRAY SYSTEM'||data.formData3.ASSET_CLASS=='XRAY EQUIPMENT'" value="XRAY EQUIPMENT">XRAY EQUIPMENT</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='XRAY SYSTEM'||data.formData3.ASSET_CLASS=='XRAY EQUIPMENT'" value="XRAY SCANNING EQUIPMENT(VACIS)">XRAY SCANNING EQUIPMENT(VACIS)</mat-option>
+                                                            <mat-option *ngIf="data.formData3.ASSET_CLASS=='XRAY SYSTEM'||data.formData3.ASSET_CLASS=='XRAY EQUIPMENT'" value="XRAY SYSTEM">XRAY SYSTEM</mat-option>
+                                                        </mat-select>
+                                                        <mat-icon
+                                                            class="icon-size-5"
+                                                            matPrefix
+                                                            [svgIcon]="'heroicons_solid:location-marker'"></mat-icon>
+                                                    </mat-form-field>
+                                                    <mat-form-field
+                                                    [ngClass]="formFieldHelpers"
+                                                    class="flex-auto gt-xs:pl-3">
+                                                    <mat-label>Asset Name (# appended when more than one created)</mat-label>
+                                                    <input matInput id="ASSET_NAME" name="ASSET_NAME" [(ngModel)]="data.formData3['ASSET_NAME']">
+                                                </mat-form-field>
+                                                    <mat-form-field
+                                                    [ngClass]="formFieldHelpers"
+                                                    class="flex-auto gt-xs:pl-3">
+                                                    <mat-label>Manufacturer</mat-label>
+                                                    <input matInput id="MFG" name="MFG" [(ngModel)]="data.formData3['MFG']">
+                                                </mat-form-field>
+                                                <mat-form-field
+                                                [ngClass]="formFieldHelpers"
+                                                class="flex-auto gt-xs:pl-3">
+                                                <mat-label>Model</mat-label>
+                                                <input matInput id="MODEL" name="MODEL" [(ngModel)]="data.formData3['MODEL']">
+                                            </mat-form-field>
+                                                    </div>
+                                                </form>
+                                        </div>
+                                        <div class="col-xl-6">
+                                                <form class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden">
+                                                    <div class="flex flex-col gt-md:flex-row">
+
+
+                                                        <mat-form-field
+                                                            [ngClass]="formFieldHelpers"
+                                                            class="fuse-mat-textarea flex-auto">
+                                                            <mat-label>Serial (seperate multiple with commas)</mat-label>
+                                                            <textarea
+                                                                matInput
+                                                                [rows]="8"
+                                                                matTextareaAutosize
+                                                                id="dsc" name="dsc" [(ngModel)]="data.formData3['SERIAL']"  autocomplete="new-password"></textarea>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="flex items-center justify-end border-t -mx-8 mt-8 px-8 py-5 bg-gray-50 dark:bg-gray-700">
+                                                        <button (click)="showAddComponents(m.ASSET_ID, m.ASSET_CLASS)" mat-button>
+                                                            Cancel
+                                                        </button>
+                                                        <button
+                                                            *ngIf="posting=='N'"
+                                                            class="px-6 ml-3"
+                                                            mat-flat-button
+                                                            [color]="'primary'" (click)="postAddComponents()">
+                                                            Save
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                        </div>
+                                        </div>                                        
+                                        <!-- END COMPONENT FORM -->
+<!-- TESTING FORM -->
+<div class="row" *ngIf="testing=='Y'&&addcomponents=='N'" style="background-color: #ffffff;">
+    <div class="row p-2">
+        <div class="col-xl-12">
+            <h2 style="font-size: 20px;"><b>Enter Test Results</b></h2>
+        </div>
+    </div>
+    <div class="col-xl-6">
+        <form class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden" autocomplete="off">
+            <div class="flex flex-col gt-xs:flex-row">
+                <div class="flex">
+                    <mat-form-field
+                        [ngClass]="formFieldHelpers"
+                        class="flex-auto">
+                        <mat-label>Test Date</mat-label>
+                        <input
+                            matInput
+                            id="TEST_DATE"
+                            name="TEST_DATE"
+                            [(ngModel)]="data.formData2['TEST_DATE']"
+                            [matDatepicker]="picker1">
+                        <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <mat-form-field
+                    [ngClass]="formFieldHelpers"
+                    class="flex-auto gt-xs:pl-3">
+                    <mat-label>Title</mat-label>
+                    <input matInput id="TITLE" name="TITLE" [(ngModel)]="data.formData2['TITLE']"  autocomplete="new-password">
+                </mat-form-field>
+                <mat-form-field
+                    [ngClass]="formFieldHelpers"
+                    class="flex-auto gt-xs:pr-3">
+                    <mat-label>Results</mat-label>
+                    <mat-select  id="type" name="type" [(ngModel)]="data.formData2['RESULTS']">
+                        <mat-option value="ADEQUATE">Adequate</mat-option>
+                        <mat-option value="DEGRADED">Degraded</mat-option>
+                        <mat-option value="NON-FUNCTIONING">Non Functioning</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </form>
+</div>
+<div class="col-xl-6">
+        <form class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden">
+            <div class="flex flex-col gt-md:flex-row">
+                <mat-form-field
+                    [ngClass]="formFieldHelpers"
+                    class="fuse-mat-textarea flex-auto">
+                    <mat-label>Reason</mat-label>
+                    <textarea
+                        matInput
+                        [rows]="8"
+                        matTextareaAutosize
+                        id="dsc" name="dsc" [(ngModel)]="data.formData2['REASON']"  autocomplete="new-password"></textarea>
+                </mat-form-field>
+            </div>
+            <div class="flex items-center justify-end border-t -mx-8 mt-8 px-8 py-5 bg-gray-50 dark:bg-gray-700">
+                <button (click)="showTest(m.ASSET_ID)" mat-button>
+                    Cancel
+                </button>
+                <button
+                    *ngIf="posting=='N'"
+                    class="px-6 ml-3"
+                    mat-flat-button
+                    [color]="'primary'" (click)="postForm2()">
+                    Save
+                </button>
+            </div>
+        </form>
+</div>
+</div>
+<!-- END OF TESTING FORM-->
+                                        <div class="row">
+                                        <div class="col-xl-6">
+                                            <div class="card card-body" *ngIf="testing!='Y'&&addcomponents!='Y'">
+                                                <div class="row p-2">
+                                                    <div class="col-xl-10">
+                                                        <h2 style="font-size: 20px;"><b>Components</b></h2>
+                                                    </div>
+                                                    <div class="col-xl-2">
+                                                        <button (click)="showAddComponents(m.ASSET_ID,m.ASSET_CLASS)" class="btn btn-primary">Add</button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="card card-body p-2 mb-2" *ngFor="let n of m.components">
+                                                    <div class="row p-2">
+                                                        <div class="col-xl-4">
+                                                            <b>Asset ID: </b><br>{{ n.ASSET_ID }}
+                                                        </div>
+                                                        <div *ngIf="n.BARCODE=='N'" class="col-xl-8">
+                                                            <b>{{ n.ASSET_NAME }}</b>
+                                                        </div>
+                                                        <div *ngIf="n.BARCODE=='Y'" class="col-xl-8">
+                                                            <input class="form-control" type="text" name="ASSET_NAME" id="ASSET_NAME" [(ngModel)]="data.formData['ASSET_NAME']">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row p-2">
+                                                        <div class="col-xl-4">
+                                                            <b>Asset Type: </b>
+                                                        </div>
+                                                        <div  *ngIf="n.BARCODE=='N'" class="col-xl-8">
+                                                            {{ n.ASSET_TYPE }}
+                                                        </div>
+                                                    </div>
+                                                    <div  *ngIf="n.BARCODE=='N'" class="row p-2">
+                                                        <div class="col-xl-4">
+                                                            <b>Manufacturer: </b><br>
+                                                            {{ n.MFG }}
+                                                        </div>
+                                                        <div class="col-xl-4">
+                                                            <b>Model: </b><br>
+                                                            <b>{{ n.MODEL }}</b>
+                                                        </div>
+                                                        <div class="col-xl-4">
+                                                            <b>Serial: </b><br>
+                                                            <b>{{ n.SERIAL }}</b>
+                                                        </div>
+                                                    </div>
+                                                    <div  *ngIf="n.BARCODE=='Y'" class="row p-2">
+                                                        <div class="col-xl-4">
+                                                            <b>Manufacturer: </b>
+                                                        </div>
+                                                        <div class="col-xl-8">
+                                                            <input class="form-control" type="text" name="MFG" id="MFG" [(ngModel)]="data.formData['MFG']">
+                                                        </div>
+                                                    </div>
+                                                    <div  *ngIf="n.BARCODE=='Y'" class="row p-2">
+                                                        <div class="col-xl-4">
+                                                            <b>Model: </b>
+                                                        </div>
+                                                        <div class="col-xl-8">
+                                                            <input class="form-control" type="text" name="MODEL" id="MODEL" [(ngModel)]="data.formData['MODEL']">
+                                                        </div>
+                                                    </div>
+                                                    <div  *ngIf="n.BARCODE=='Y'" class="row p-2">
+                                                        <div class="col-xl-4">
+                                                            <b>Serial: </b>
+                                                        </div>
+                                                        <div class="col-xl-8">
+                                                            <input class="form-control" type="text" name="SERIAL" id="SERIAL" [(ngModel)]="data.formData['SERIAL']">
+                                                        </div>
+                                                    </div>
+                                                    <div  *ngIf="n.BARCODE=='Y'" class="row p-2">
+                                                        <div class="col-xl-4">
+                                                            <b>Location: </b>
+                                                        </div>
+                                                        <div class="col-xl-8">
+                                                            <input class="form-control" type="text" name="LOCATION" id="LOCATION" [(ngModel)]="data.formData['LOCATION']">
+                                                        </div>
+                                                    </div>
+                                                    <div  *ngIf="n.BARCODE=='N'" class="row p-2">
+                                                        <div class="col-xl-9">
+
+                                                        </div>
+                                                        <div class="col-xl-3">
+                                                            <button mat-raised-button="" 
+                                                            (click)="showComponentEdit(m.components,n)"
+                                                            color="primary-200" 
+                                                            class="mat-focus-indicator mat-badge mat-raised-button mat-button-base mat-primary mat-badge-accent mat-badge-overlap">
+                                                                <span class="mat-button-wrapper"> Edit </span>
+                                                                <span matripple="" class="mat-ripple mat-button-ripple"></span>
+                                                                <span class="mat-button-focus-overlay"></span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div  *ngIf="n.BARCODE=='Y'" class="row p-2">
+                                                            <div class="col-xl-3">
+                                                                <button mat-raised-button="" 
+                                                                (click)="showComponentEdit(m.components,n)"
+                                                                class="mat-focus-indicator mat-badge mat-raised-button mat-button-base mat-badge-accent mat-badge-overlap">
+                                                                    <span class="mat-button-wrapper"> Cancel </span>
+                                                                    <span matripple="" class="mat-ripple mat-button-ripple"></span>
+                                                                    <span class="mat-button-focus-overlay"></span>
+                                                                </button>
+                                                            </div>
+                                                        <div class="col-xl-3">
+                                                            <button mat-raised-button="" 
+                                                            (click)="postForm()"
+                                                            color="primary-200" 
+                                                            class="mat-focus-indicator mat-badge mat-raised-button mat-button-base mat-primary mat-badge-accent mat-badge-overlap">
+                                                                <span class="mat-button-wrapper"> Save </span>
+                                                                <span matripple="" class="mat-ripple mat-button-ripple"></span>
+                                                                <span class="mat-button-focus-overlay"></span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-xl-3">
+                                                            <button class="btn btn-danger" (click)="deleteComponent();">Delete</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6">
+                                            <div class="card card-body"  *ngIf="testing!='Y'&&addcomponents!='Y'">
+                                                <div class="row p-2">
+                                                    <div class="col-xl-10">
+                                                        <h2 style="font-size: 20px;"><b>Test History</b></h2>
+                                                    </div>
+                                                    <div class="col-xl-2">
+                                                        <button (click)="showTest(m.ASSET_ID)" class="btn btn-primary">Test</button>
+                                                    </div>
+                                                </div>
+                                
+                                                <div class="card card-body p-2" *ngFor="let n of m.history">                                                   
+                                                    <div class="row p-2">
+                                                        <div class="col-xl-4">
+                                                            <b>Test Date: </b>{{ n.TEST_DATE }}
+                                                        </div>
+                                                        <div class="col-xl-8">
+                                                            <b>{{ n.RESULTS }}</b>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row p-2">
+                                                        <div class="col-xl-12">
+                                                            <b>{{ n.TITLE }}</b>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row p-2">
+                                                        <div class="col-xl-4">
+                                                            <b>Tested By: </b>
+                                                        </div>
+                                                        <div class="col-xl-8">
+                                                            <b>{{ n.FULL_NAME }}</b>
+                                                        </div>
+                                                    </div> 
+                                                    <div class="row p-2">
+                                                        <div class="col-xl-4">
+                                                            <b>Reason: </b>
+                                                        </div>
+                                                        <div class="col-xl-8">
+                                                            <b>{{ n.REASON }}</b>
+                                                        </div>
+                                                    </div> 
+                                                    <div class="row p-2">
+                                                        <div class="col-xl-9">
+
+                                                        </div>
+                                                        <div class="col-xl-3">
+                                                            <button mat-raised-button="" 
+                                                            (click)="showHistoryEdit(n)"
+                                                            color="primary-200" 
+                                                            class="mat-focus-indicator mat-badge mat-raised-button mat-button-base mat-primary mat-badge-accent mat-badge-overlap">
+                                                                <span class="mat-button-wrapper"> Edit </span>
+                                                                <span matripple="" class="mat-ripple mat-button-ripple"></span>
+                                                                <span class="mat-button-focus-overlay"></span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" *ngIf="m.BARCODE=='Y'">
+                                    <div class="col-xl-12">
+                                        <div class="card card-body">
+                                            <div class="row">
+                                                <div class="col-xl-11">
+                                                </div>
+                                                <div class="col-xl-1">
+                                                    <button (click)="showPanel(m.ASSET_ID)" class="btn btn-primary">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </div>  
